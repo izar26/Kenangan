@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Untuk Kamu 💖</title>
+  <link rel="stylesheet" href="style.css">
+  <!-- Font online opsional -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="petals" id="petals"></div>
+
+  <div class="app-shell">
+    <!-- NAVIGATION -->
+    <nav class="nav card" id="nav">
+      <button class="active" data-target="home">🏠 Home</button>
+      <button data-target="gallery">📸 Gallery</button>
+      <button data-target="countdown">⏳ Countdown</button>
+      <button data-target="notes">💌 Love Notes</button>
+    </nav>
+
+    <!-- HOME -->
+    <section id="home" class="show">
+      <div class="card hero">
+        <div>
+          <h1>Hai, Sayang 🌸</h1>
+          <p style="font-size: 18px; margin-top:8px">Ini aplikasi kecil yang aku buat khusus untuk kamu. Semoga tiap membuka halaman ini, kamu merasa disayang, diperhatiin, dan dihujani bunga-bunga manis 💖</p>
+          <div class="hero-cta">
+            <button class="btn" data-target="gallery">Lihat Kenangan</button>
+            <button class="btn ghost" data-action="burst">Taburkan Bunga ✨</button>
+          </div>
+          <div style="margin-top: 14px; color:#8a6b7e; font-size: 14px">Psst… kamu bisa upload foto kita di menu Gallery, dan atur tanggal anniversary di menu Countdown ya!</div>
+        </div>
+        <div class="hero-img flower-corners">
+          <!-- Gambar ini akan diganti oleh foto pertama di galeri -->
+          <img id="heroPhoto" src="https://placehold.co/600x600/f7e8f3/8a6b7e?text=Foto+Kita" alt="Foto Kamu" />
+        </div>
+      </div>
+    </section>
+
+    <!-- GALLERY -->
+    <section id="gallery">
+      <div class="card">
+        <div style="display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap; margin-bottom:14px">
+          <h2>Kenangan Kita 📷</h2>
+          <label class="btn ghost" for="fileInput">+ Tambah Foto</label>
+          <input id="fileInput" type="file" accept="image/*" multiple hidden />
+        </div>
+        <div class="grid" id="galleryGrid">
+          <!-- Kotak untuk upload foto -->
+          <div class="photo upload" id="uploadTile">
+            <div style="text-align:center">
+              <div style="font-size:28px">🌷</div>
+              <div style="font-weight:700; margin-top:6px">Tambahkan Foto</div>
+              <div style="font-size:12px; color:var(--muted)">Klik di sini atau tombol di atas</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Lightbox untuk preview gambar -->
+      <div class="lightbox" id="lightbox">
+        <img alt="preview" />
+        <!-- Tombol Hapus di dalam Lightbox -->
+        <button id="deleteBtn" class="btn danger" style="position:absolute; bottom:20px; right:20px">Hapus Foto</button>
+      </div>
+    </section>
+
+    <!-- COUNTDOWN -->
+    <section id="countdown">
+      <div class="card">
+        <h2>Hitung Mundur Hari Spesial ⏳</h2>
+        <p style="margin: 6px 0 14px">Atur tanggal anniversary atau ulang tahun, nanti kita hitung mundur bareng-bareng 🥰</p>
+        <div class="inline" style="margin-bottom:14px">
+          <input id="dateInput" class="input" type="date" />
+          <input id="titleInput" class="input" type="text" placeholder="Judul (mis. Anniversary)" />
+          <button class="btn" id="saveDate">Simpan</button>
+        </div>
+        <div id="titleOut" style="font-weight:700; font-size:18px; margin:4px 0 14px">—</div>
+        <div class="count-wrap" id="countWrap">
+          <div class="pill"><strong id="d">0</strong><span>Hari</span></div>
+          <div class="pill"><strong id="h">0</strong><span>Jam</span></div>
+          <div class="pill"><strong id="m">0</strong><span>Menit</span></div>
+          <div class="pill"><strong id="s">0</strong><span>Detik</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- LOVE NOTES -->
+    <section id="notes">
+      <div class="card">
+        <h2>Love Notes 💌</h2>
+        <p style="margin: 6px 0 14px">Klik Random untuk menampilkan kata manis, atau tambahkan pesanmu sendiri.</p>
+        <div class="notes">
+          <div>
+            <div class="typewriter" id="typewriter">—</div>
+            <div class="hero-cta">
+              <button class="btn" id="randomBtn">Random</button>
+              <button class="btn ghost" id="copyBtn">Salin</button>
+            </div>
+          </div>
+          <div>
+            <div style="display:grid; gap:8px; margin-bottom:8px">
+              <textarea id="noteInput" class="input" rows="3" placeholder="Tulis pesan cinta di sini…"></textarea>
+              <button class="btn" id="addNote">Tambah ke Koleksi</button>
+            </div>
+            <div class="note-list" id="noteList"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer>Made with 💖 just for you • Jika kamu melihat ini, kamu itu spesial ✨</footer>
+  </div>
+  
+  <script src="script.js"></script>
+</body>
+</html>
