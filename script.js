@@ -36,7 +36,6 @@ async function loadData() {
     setCountdownUI();
     renderNotesUI();
     syncHero();
-    tick(); // Mulai countdown setelah data dimuat
   } catch (error) {
     console.error("Error loading data:", error);
     alert("Tidak bisa memuat data. Periksa koneksi atau konfigurasi Bin.");
@@ -112,9 +111,9 @@ const fileInput = document.getElementById('fileInput');
 const uploadTile = document.getElementById('uploadTile');
 const LB = document.getElementById('lightbox');
 const LBimg = LB.querySelector('img');
-const deleteBtn = document.getElementById('deleteBtn'); // Tombol hapus di lightbox
+const deleteBtn = document.getElementById('deleteBtn');
 
-let currentImageInLightbox = null; // Variabel untuk melacak foto yang sedang dibuka
+let currentImageInLightbox = null;
 
 uploadTile.addEventListener('click', () => fileInput.click());
 LB.addEventListener('click', () => LB.classList.remove('show'));
@@ -128,14 +127,12 @@ function addPhotoCard(item) {
     <button class="delete-btn">×</button>
   `;
   
-  // Saat gambar kecil di-klik, buka lightbox
   wrap.querySelector('img').addEventListener('click', () => { 
     LBimg.src = item.url; 
     LB.classList.add('show'); 
-    currentImageInLightbox = item; // Simpan info foto yang sedang dibuka
+    currentImageInLightbox = item;
   });
   
-  // Logika hapus dari tombol 'x' di gambar kecil
   wrap.querySelector('.delete-btn').addEventListener('click', async (e) => {
     e.stopPropagation();
     if (!confirm("Hapus foto ini? (File di Cloudinary tetap ada)")) return;
@@ -146,26 +143,16 @@ function addPhotoCard(item) {
   grid.insertBefore(wrap, uploadTile);
 }
 
-// *** INI BAGIAN YANG DIPERBAIKI ***
-// Logika untuk tombol "Hapus Foto" di dalam lightbox
 deleteBtn.addEventListener('click', async (e) => {
-    e.stopPropagation(); // Mencegah lightbox langsung tertutup
+    e.stopPropagation();
     if (currentImageInLightbox && confirm("Hapus foto ini? (File di Cloudinary tetap ada)")) {
-        // Hapus foto dari array data utama
         appData.gallery = appData.gallery.filter(it => it.id !== currentImageInLightbox.id);
-        
-        // Simpan perubahan ke JSONBin
         await saveData();
-        
-        // Perbarui tampilan galeri
         refreshGalleryUI();
-
-        // Tutup lightbox dan reset variabel
         LB.classList.remove('show');
         currentImageInLightbox = null;
     }
 });
-
 
 function refreshGalleryUI() {
   Array.from(grid.querySelectorAll('.photo')).forEach(el => { if (el !== uploadTile) el.remove(); });
@@ -245,7 +232,7 @@ function tick() {
   const d = Math.floor(diff / 1000 / 60 / 60 / 24);
   dEl.textContent = d; hEl.textContent = h; mEl.textContent = m; sEl.textContent = s;
 }
-setInterval(tick, 1000);
+// JANGAN panggil setInterval di sini
 
 
 // ==========================
@@ -336,4 +323,8 @@ function syncHero() {
 loadData().then(() => {
     console.log("Data berhasil dimuat. Aplikasi siap digunakan!");
     randomNote();
+
+    // *** INI BAGIAN YANG DIPERBAIKI ***
+    // Mulai timer countdown SETELAH data berhasil dimuat
+    setInterval(tick, 1000); 
 });
