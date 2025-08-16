@@ -8,16 +8,17 @@
   <!-- Font online opsional -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Poppins:wght@400;600;700&family=Caveat&family=Merriweather&display=swap" rel="stylesheet">
 </head>
 <body>
   <div class="petals" id="petals"></div>
 
   <div class="app-shell">
+    
     <!-- NAVIGATION -->
     <nav class="nav card" id="nav">
       <button class="active" data-target="home">🏠 Home</button>
-      <button data-target="gallery">📸 Gallery</button>
+      <button data-target="gallery">🗺️ Perjalanan Kita</button>
       <button data-target="countdown">⏳ Countdown</button>
       <button data-target="notes">💌 Love Notes</button>
     </nav>
@@ -27,46 +28,37 @@
       <div class="card hero">
         <div>
           <h1 id="mainGreeting">Hai, Sayang 🌸</h1>
-          <!-- ELEMEN BARU UNTUK SAPAAN CUACA -->
           <p id="weatherGreeting" style="font-size: 18px; margin-top:8px; color: var(--accent); font-weight: 600;">Memuat sapaan spesial...</p>
           <p style="font-size: 16px; margin-top:12px;">Ini aplikasi kecil yang aku buat khusus untuk kamu. Semoga tiap membuka halaman ini, kamu merasa disayang, diperhatiin, dan dihujani bunga-bunga manis 💖</p>
           <div class="hero-cta">
-            <button class="btn" data-target="gallery">🖼️ Lihat Kenangan</button>
+            <button class="btn" data-target="gallery">🗺️ Lihat Perjalanan Kita</button>
             <button class="btn ghost" data-action="burst">Taburkan Bunga ✨</button>
           </div>
           <div style="margin-top: 14px; color:#8a6b7e; font-size: 14px">Psst… kamu bisa upload foto kita di menu Gallery, dan atur tanggal anniversary di menu Countdown ya!</div>
         </div>
         <div class="hero-img flower-corners">
-          <!-- Gambar ini akan diganti oleh foto pertama di galeri -->
           <img id="heroPhoto" src="https://placehold.co/600x600/f7e8f3/8a6b7e?text=Foto+Kita" alt="Foto Kamu" />
         </div>
       </div>
     </section>
 
-    <!-- GALLERY -->
+    <!-- GALLERY (SEKARANG TIMELINE) -->
     <section id="gallery">
       <div class="card">
         <div style="display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap; margin-bottom:14px">
-          <h2>Kenangan Kita 📷</h2>
-          <label class="btn ghost" for="fileInput">➕ Tambah Foto</label>
-          <input id="fileInput" type="file" accept="image/*" multiple hidden />
-        </div>
-        <div class="grid" id="galleryGrid">
-          <!-- Kotak untuk upload foto -->
-          <div class="photo upload" id="uploadTile">
-            <div style="text-align:center">
-              <div style="font-size:28px">🌷</div>
-              <div style="font-weight:700; margin-top:6px">Tambahkan Foto</div>
-              <div style="font-size:12px; color:var(--muted)">Klik di sini atau tombol di atas</div>
-            </div>
+          <h2>Perjalanan Kita 🗺️</h2>
+          <div>
+            <button class="btn ghost" id="randomMemoryBtn">Kenangan Acak ✨</button>
+            <button class="btn ghost" id="addPhotoBtn">➕ Tambah</button>
           </div>
         </div>
+        <!-- Kontainer untuk timeline -->
+        <div class="timeline-container" id="timelineContainer">
+          <!-- Timeline akan di-generate oleh JS di sini -->
+        </div>
       </div>
-
-      <!-- Lightbox untuk preview gambar -->
       <div class="lightbox" id="lightbox">
         <img alt="preview" />
-        <!-- Tombol Hapus di dalam Lightbox -->
         <button id="deleteBtn" class="btn danger" style="position:absolute; bottom:20px; right:20px">🗑️ Hapus Foto</button>
       </div>
     </section>
@@ -119,6 +111,29 @@
     <button id="musicToggleBtn" title="Putar/Hentikan Musik">🎵</button>
   </div>
   
+  <!-- MODAL UNTUK UPLOAD FOTO BARU -->
+  <div id="photoUploader" class="editor-modal">
+    <div class="editor-content">
+      <button id="closeUploaderBtn" class="close-btn">×</button>
+      <h3>Tambah Kenangan Baru</h3>
+      
+      <!-- Input untuk file foto -->
+      <label for="photoFileInput" class="file-input-label">Pilih Foto...</label>
+      <input type="file" id="photoFileInput" accept="image/*" hidden>
+      <img id="photoPreview" src="" alt="Preview" class="photo-preview"/>
+
+      <!-- Input untuk tanggal -->
+      <label for="photoDateInput">Tanggal Kenangan</label>
+      <input type="date" id="photoDateInput" class="input">
+
+      <!-- Input untuk caption/label -->
+      <label for="photoLabelInput">Judul Kenangan</label>
+      <input type="text" id="photoLabelInput" class="input" placeholder="mis: Kencan pertama">
+
+      <button id="savePhotoBtn" class="btn">Simpan Kenangan</button>
+    </div>
+  </div>
+
   <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.7.77/Tone.js"></script>
   <script src="script.js"></script>
 </body>
