@@ -3,8 +3,8 @@
 // ==========================
 const BIN_ID = '689ff25743b1c97be91f6f54';
 const API_KEY = '$2a$10$GRt3jpAEm73LBDcxrEbF7OKiHLVp5DYdCYIWktCSOWoTOPXSZvoZy';
-const CLOUD_NAME = "djfw245ka"; // <-- GANTI JIKA PERLU
-const UPLOAD_PRESET = "Kenangan"; // <-- GANTI JIKA PERLU
+const CLOUD_NAME = "djfw245ka";
+const UPLOAD_PRESET = "Kenangan";
 
 const binUrl = `https://api.jsonbin.io/v3/b/${BIN_ID}`;
 const headers = {
@@ -12,26 +12,17 @@ const headers = {
   'X-Master-Key': API_KEY
 };
 
-// Variabel global untuk menyimpan semua data aplikasi
-let appData = {
-  gallery: [],
-  countdown: { date: null, title: "" },
-  notes: []
-};
+let appData = { gallery: [], countdown: { date: null, title: "" }, notes: [] };
 
 // ==========================
 // FUNGSI UTAMA DATA (JSONBIN.IO)
 // ==========================
-
-// Fungsi untuk MEMBACA semua data dari JSONBin
 async function loadData() {
   try {
     const response = await fetch(`${binUrl}/latest`, { headers });
     if (!response.ok) throw new Error("Gagal mengambil data dari bin.");
     const data = await response.json();
-    appData = data.record; // Simpan data dari bin ke variabel global
-
-    // Panggil semua fungsi untuk memperbarui tampilan setelah data didapat
+    appData = data.record;
     refreshGalleryUI();
     setCountdownUI();
     renderNotesUI();
@@ -42,7 +33,6 @@ async function loadData() {
   }
 }
 
-// Fungsi untuk MENYIMPAN semua data ke JSONBin
 async function saveData() {
   try {
     document.body.style.cursor = 'wait';
@@ -112,7 +102,6 @@ const uploadTile = document.getElementById('uploadTile');
 const LB = document.getElementById('lightbox');
 const LBimg = LB.querySelector('img');
 const deleteBtn = document.getElementById('deleteBtn');
-
 let currentImageInLightbox = null;
 
 uploadTile.addEventListener('click', () => fileInput.click());
@@ -121,21 +110,15 @@ LB.addEventListener('click', () => LB.classList.remove('show'));
 function addPhotoCard(item) {
   const wrap = document.createElement('div');
   wrap.className = 'photo';
-  wrap.innerHTML = `
-    <img alt="kenangan" src="${item.url}">
-    <div class="tag">${item.label || ''}</div>
-    <button class="delete-btn">×</button>
-  `;
-  
+  wrap.innerHTML = `<img alt="kenangan" src="${item.url}"><div class="tag">${item.label || ''}</div><button class="delete-btn">×</button>`;
   wrap.querySelector('img').addEventListener('click', () => { 
     LBimg.src = item.url; 
     LB.classList.add('show'); 
     currentImageInLightbox = item;
   });
-  
   wrap.querySelector('.delete-btn').addEventListener('click', async (e) => {
     e.stopPropagation();
-    if (!confirm("Hapus foto ini? (File di Cloudinary tetap ada)")) return;
+    if (!confirm("Hapus foto ini?")) return;
     appData.gallery = appData.gallery.filter(it => it.id !== item.id);
     await saveData();
     refreshGalleryUI();
@@ -145,7 +128,7 @@ function addPhotoCard(item) {
 
 deleteBtn.addEventListener('click', async (e) => {
     e.stopPropagation();
-    if (currentImageInLightbox && confirm("Hapus foto ini? (File di Cloudinary tetap ada)")) {
+    if (currentImageInLightbox && confirm("Hapus foto ini?")) {
         appData.gallery = appData.gallery.filter(it => it.id !== currentImageInLightbox.id);
         await saveData();
         refreshGalleryUI();
@@ -156,35 +139,26 @@ deleteBtn.addEventListener('click', async (e) => {
 
 function refreshGalleryUI() {
   Array.from(grid.querySelectorAll('.photo')).forEach(el => { if (el !== uploadTile) el.remove(); });
-  if (appData.gallery) {
-    appData.gallery.forEach(item => addPhotoCard(item));
-  }
+  if (appData.gallery) appData.gallery.forEach(item => addPhotoCard(item));
 }
 
 fileInput.addEventListener('change', async (e) => {
   const files = Array.from(e.target.files || []);
   if (!files.length) return;
   uploadTile.querySelector('div').innerHTML = 'Mengunggah...';
-
   for (const file of files) {
     const formData = new FormData();
     formData.append("file", file);
     formData.append("upload_preset", UPLOAD_PRESET);
-
-    const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`, {
-      method: "POST",
-      body: formData
-    });
+    const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`, { method: "POST", body: formData });
     const data = await res.json();
     appData.gallery.push({ url: data.secure_url, id: data.public_id, label: file.name.replace(/\.[^.]+$/, '') });
   }
-
   await saveData();
   refreshGalleryUI();
   e.target.value = '';
   uploadTile.querySelector('div').innerHTML = `<div style="font-size:28px">🌷</div><div style="font-weight:700; margin-top:6px">Tambahkan Foto</div><div style="font-size:12px; color:var(--muted)">Klik di sini atau tombol di atas</div>`;
 });
-
 
 // ==========================
 // COUNTDOWN
@@ -200,10 +174,7 @@ const sEl = document.getElementById('s');
 
 function setCountdownUI() {
   const data = appData.countdown;
-  if (!data || !data.date) {
-    titleOut.textContent = '—';
-    return;
-  }
+  if (!data || !data.date) { titleOut.textContent = '—'; return; }
   titleOut.textContent = data.title ? `${data.title} • ${new Date(data.date).toLocaleDateString()}` : new Date(data.date).toLocaleDateString();
   dateInput.value = data.date.slice(0, 10);
   titleInput.value = data.title || '';
@@ -219,10 +190,7 @@ saveDate.addEventListener('click', async () => {
 
 function tick() {
   const data = appData.countdown;
-  if (!data || !data.date) {
-    dEl.textContent = hEl.textContent = mEl.textContent = sEl.textContent = '0';
-    return;
-  }
+  if (!data || !data.date) { dEl.textContent = hEl.textContent = mEl.textContent = sEl.textContent = '0'; return; }
   const now = new Date();
   const target = new Date(data.date);
   let diff = Math.max(0, target - now);
@@ -232,8 +200,6 @@ function tick() {
   const d = Math.floor(diff / 1000 / 60 / 60 / 24);
   dEl.textContent = d; hEl.textContent = h; mEl.textContent = m; sEl.textContent = s;
 }
-// JANGAN panggil setInterval di sini
-
 
 // ==========================
 // LOVE NOTES
@@ -251,14 +217,9 @@ function renderNotesUI() {
     appData.notes.forEach((noteText, index) => {
       const chip = document.createElement('div');
       chip.className = 'chip';
-      chip.innerHTML = `
-        <span>${noteText}</span>
-        <button class="delete-chip-btn" data-index="${index}">×</button>
-      `;
+      chip.innerHTML = `<span>${noteText}</span><button class="delete-chip-btn" data-index="${index}">×</button>`;
       chip.title = 'Klik untuk tampilkan';
-      
       chip.querySelector('span').addEventListener('click', () => typeText(noteText));
-      
       chip.querySelector('.delete-chip-btn').addEventListener('click', async (e) => {
         e.stopPropagation();
         if(!confirm("Hapus catatan ini?")) return;
@@ -282,10 +243,7 @@ function typeText(text) {
 }
 
 function randomNote() {
-  if (!appData.notes || appData.notes.length === 0) {
-    typeText("Belum ada catatan cinta... Tambahkan satu yuk!");
-    return;
-  }
+  if (!appData.notes || appData.notes.length === 0) { typeText("Belum ada catatan cinta... Tambahkan satu yuk!"); return; }
   const pick = appData.notes[Math.floor(Math.random() * appData.notes.length)];
   typeText(pick);
 }
@@ -300,31 +258,112 @@ copyBtn.addEventListener('click', async () => {
 
 addNote.addEventListener('click', async () => {
   const v = noteInput.value.trim(); if (!v) return;
-  if (!appData.notes.includes(v)) {
-    appData.notes.unshift(v);
-  }
+  if (!appData.notes.includes(v)) appData.notes.unshift(v);
   await saveData();
   renderNotesUI();
   noteInput.value = '';
   typeText(v);
 });
 
+// ==========================
+// FITUR MUSIK LATAR
+// ==========================
+const musicToggleBtn = document.getElementById('musicToggleBtn');
+const synth = new Tone.PolySynth(Tone.Synth, {
+  oscillator: { type: "fmsine", modulationType: "sine", modulationIndex: 3, harmonicity: 3.4 },
+  envelope: { attack: 0.01, decay: 0.1, sustain: 0.2, release: 0.4 }
+}).toDestination();
+synth.volume.value = -12;
+
+// --- LAGU AKTIF: Bintang Kecil ---
+const melody = [
+  {'time': '0:0', 'note': 'C4', 'duration': '4n'}, {'time': '0:1', 'note': 'C4', 'duration': '4n'},
+  {'time': '0:2', 'note': 'G4', 'duration': '4n'}, {'time': '0:3', 'note': 'G4', 'duration': '4n'},
+  {'time': '1:0', 'note': 'A4', 'duration': '4n'}, {'time': '1:1', 'note': 'A4', 'duration': '4n'},
+  {'time': '1:2', 'note': 'G4', 'duration': '2n'},
+  {'time': '2:0', 'note': 'F4', 'duration': '4n'}, {'time': '2:1', 'note': 'F4', 'duration': '4n'},
+  {'time': '2:2', 'note': 'E4', 'duration': '4n'}, {'time': '2:3', 'note': 'E4', 'duration': '4n'},
+  {'time': '3:0', 'note': 'D4', 'duration': '4n'}, {'time': '3:1', 'note': 'D4', 'duration': '4n'},
+  {'time': '3:2', 'note': 'C4', 'duration': '2n'},
+];
+const loopDuration = '4m';
+const tempo = 100;
+
+const part = new Tone.Part((time, value) => {
+  synth.triggerAttackRelease(value.note, value.duration, time);
+}, melody).start(0);
+part.loop = true;
+part.loopEnd = loopDuration;
+Tone.Transport.bpm.value = tempo;
+
+let isMusicPlaying = false;
+let isAudioReady = false;
+
+musicToggleBtn.addEventListener('click', async () => {
+  if (!isAudioReady) {
+    await Tone.start();
+    isAudioReady = true;
+    console.log('Audio context siap.');
+  }
+  if (isMusicPlaying) {
+    Tone.Transport.pause();
+    musicToggleBtn.textContent = '🎵';
+    isMusicPlaying = false;
+  } else {
+    Tone.Transport.start();
+    musicToggleBtn.textContent = '🔇';
+    isMusicPlaying = true;
+  }
+});
+
+// ==========================
+// WEATHER GREETING
+// ==========================
+const weatherGreetingEl = document.getElementById('weatherGreeting');
+const mainGreetingEl = document.getElementById('mainGreeting');
+
+function getWeatherGreeting() {
+    if (!navigator.geolocation) {
+        weatherGreetingEl.textContent = "Semoga harimu indah, ya!";
+        return;
+    }
+    navigator.geolocation.getCurrentPosition(async (position) => {
+        const { latitude: lat, longitude: lon } = position.coords;
+        try {
+            const response = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true`);
+            const weatherData = await response.json();
+            const weatherCode = weatherData.current_weather.weathercode;
+            let greeting = "Semoga harimu seindah dirimu! ✨";
+            if ([0, 1].includes(weatherCode)) greeting = "Cerah ya hari ini, secerah senyummu! ☀️";
+            else if ([2, 3].includes(weatherCode)) greeting = "Sedikit berawan, tapi cintaku padamu selalu cerah! 🌥️";
+            else if ([45, 48].includes(weatherCode)) greeting = "Di luar berkabut, pas buat pelukan hangat. 🤗";
+            else if ([51, 53, 55, 61, 63, 65, 80, 81, 82].includes(weatherCode)) greeting = "Lagi gerimis manja, enaknya sambil minum teh bareng kamu. 🌧️";
+            else if ([95, 96, 99].includes(weatherCode)) greeting = "Ada badai di luar, tapi di sini aman bersamamu. ⛈️";
+            weatherGreetingEl.textContent = greeting;
+            mainGreetingEl.textContent = "Hai, Sayang";
+        } catch (error) {
+            console.error("Gagal mengambil data cuaca:", error);
+            weatherGreetingEl.textContent = "Semoga harimu indah, ya!";
+        }
+    }, () => {
+        weatherGreetingEl.textContent = "Semoga harimu indah, ya!";
+    });
+}
 
 // ==========================
 // FUNGSI KUALITAS & INISIALISASI
 // ==========================
 function syncHero() {
-  if (appData.gallery && appData.gallery.length) {
-    document.getElementById('heroPhoto').src = appData.gallery[0].url;
+  if (appData.gallery && appData.gallery.length > 0) {
+    const randomIndex = Math.floor(Math.random() * appData.gallery.length);
+    document.getElementById('heroPhoto').src = appData.gallery[randomIndex].url;
   }
 }
 
-// Mulai aplikasi dengan mengambil data dari JSONBin
+// Mulai aplikasi
 loadData().then(() => {
     console.log("Data berhasil dimuat. Aplikasi siap digunakan!");
+    getWeatherGreeting();
     randomNote();
-
-    // *** INI BAGIAN YANG DIPERBAIKI ***
-    // Mulai timer countdown SETELAH data berhasil dimuat
     setInterval(tick, 1000); 
 });

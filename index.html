@@ -26,10 +26,12 @@
     <section id="home" class="show">
       <div class="card hero">
         <div>
-          <h1>Hai, Sayang 🌸</h1>
-          <p style="font-size: 18px; margin-top:8px">Ini aplikasi kecil yang aku buat khusus untuk kamu. Semoga tiap membuka halaman ini, kamu merasa disayang, diperhatiin, dan dihujani bunga-bunga manis 💖</p>
+          <h1 id="mainGreeting">Hai, Sayang 🌸</h1>
+          <!-- ELEMEN BARU UNTUK SAPAAN CUACA -->
+          <p id="weatherGreeting" style="font-size: 18px; margin-top:8px; color: var(--accent); font-weight: 600;">Memuat sapaan spesial...</p>
+          <p style="font-size: 16px; margin-top:12px;">Ini aplikasi kecil yang aku buat khusus untuk kamu. Semoga tiap membuka halaman ini, kamu merasa disayang, diperhatiin, dan dihujani bunga-bunga manis 💖</p>
           <div class="hero-cta">
-            <button class="btn" data-target="gallery">Lihat Kenangan</button>
+            <button class="btn" data-target="gallery">🖼️ Lihat Kenangan</button>
             <button class="btn ghost" data-action="burst">Taburkan Bunga ✨</button>
           </div>
           <div style="margin-top: 14px; color:#8a6b7e; font-size: 14px">Psst… kamu bisa upload foto kita di menu Gallery, dan atur tanggal anniversary di menu Countdown ya!</div>
@@ -46,7 +48,7 @@
       <div class="card">
         <div style="display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap; margin-bottom:14px">
           <h2>Kenangan Kita 📷</h2>
-          <label class="btn ghost" for="fileInput">+ Tambah Foto</label>
+          <label class="btn ghost" for="fileInput">➕ Tambah Foto</label>
           <input id="fileInput" type="file" accept="image/*" multiple hidden />
         </div>
         <div class="grid" id="galleryGrid">
@@ -65,7 +67,7 @@
       <div class="lightbox" id="lightbox">
         <img alt="preview" />
         <!-- Tombol Hapus di dalam Lightbox -->
-        <button id="deleteBtn" class="btn danger" style="position:absolute; bottom:20px; right:20px">Hapus Foto</button>
+        <button id="deleteBtn" class="btn danger" style="position:absolute; bottom:20px; right:20px">🗑️ Hapus Foto</button>
       </div>
     </section>
 
@@ -77,7 +79,7 @@
         <div class="inline" style="margin-bottom:14px">
           <input id="dateInput" class="input" type="date" />
           <input id="titleInput" class="input" type="text" placeholder="Judul (mis. Anniversary)" />
-          <button class="btn" id="saveDate">Simpan</button>
+          <button class="btn" id="saveDate">💾 Simpan</button>
         </div>
         <div id="titleOut" style="font-weight:700; font-size:18px; margin:4px 0 14px">—</div>
         <div class="count-wrap" id="countWrap">
@@ -98,14 +100,14 @@
           <div>
             <div class="typewriter" id="typewriter">—</div>
             <div class="hero-cta">
-              <button class="btn" id="randomBtn">Random</button>
-              <button class="btn ghost" id="copyBtn">Salin</button>
+              <button class="btn" id="randomBtn">🎲 Random</button>
+              <button class="btn ghost" id="copyBtn">📋 Salin</button>
             </div>
           </div>
           <div>
             <div style="display:grid; gap:8px; margin-bottom:8px">
               <textarea id="noteInput" class="input" rows="3" placeholder="Tulis pesan cinta di sini…"></textarea>
-              <button class="btn" id="addNote">Tambah ke Koleksi</button>
+              <button class="btn" id="addNote">💌 Tambah ke Koleksi</button>
             </div>
             <div class="note-list" id="noteList"></div>
           </div>
@@ -114,8 +116,10 @@
     </section>
 
     <footer>Made with 💖 just for you • Jika kamu melihat ini, kamu itu spesial ✨</footer>
+    <button id="musicToggleBtn" title="Putar/Hentikan Musik">🎵</button>
   </div>
   
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.7.77/Tone.js"></script>
   <script src="script.js"></script>
 </body>
 </html>
