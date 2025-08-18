@@ -1,6 +1,6 @@
 {
-  "name": "Untuk Kamu 💖",
-  "short_name": "Untuk Kamu",
+  "name": "Cerita Kitau 💖",
+  "short_name": "Cerita Kita",
   "description": "Aplikasi kecil yang dibuat khusus untukmu.",
   "start_url": ".",
   "display": "standalone",
@@ -8,14 +8,14 @@
   "theme_color": "#ff6fa9",
   "icons": [
     {
-      "src": "https://placehold.co/192x192/ff6fa9/white?text=💖",
+      "src": "https://res.cloudinary.com/djfw245ka/image/upload/v1755495113/Desain_tanpa_judul_mzru8z.png",
       "sizes": "192x192",
       "type": "image/png"
     },
     {
-      "src": "https://placehold.co/512x512/ff6fa9/white?text=�",
+      "src": "https://res.cloudinary.com/djfw245ka/image/upload/v1755495114/Desain_tanpa_judul_1_jgzw4m.png",
       "sizes": "512x512",
       "type": "image/png"
     }
   ]
-}
+}  
