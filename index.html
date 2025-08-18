@@ -10,11 +10,15 @@
   <meta name="theme-color" content="#ff6fa9">
   <link rel="apple-touch-icon" href="https://res.cloudinary.com/djfw245ka/image/upload/v1755495113/Desain_tanpa_judul_mzru8z.png">
   
+  <!-- LIBRARY PETA -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+
   <!-- MEMANGGIL SEMUA FILE CSS DARI FOLDER 'css' -->
   <link rel="stylesheet" href="css/base.css">
   <link rel="stylesheet" href="css/layout.css">
   <link rel="stylesheet" href="css/components.css">
   <link rel="stylesheet" href="css/features.css">
+  <link rel="stylesheet" href="css/map.css"> <!-- FILE BARU DITAMBAHKAN -->
   <link rel="stylesheet" href="css/animations.css">
   <link rel="stylesheet" href="css/responsive.css">
   
@@ -28,10 +32,11 @@
 
   <div class="app-shell">
     
-    <!-- NAVIGATION -->
+    <!-- NAVIGATION (DIPERBARUI) -->
     <nav class="nav card" id="nav">
       <button class="active" data-target="home">🏠 Home</button>
-      <button data-target="gallery">🗺️ Perjalanan</button>
+      <button data-target="gallery">🕰️ Perjalanan</button>
+      <button data-target="map">🗺️ Peta</button>
       <button data-target="wishlist">📝 Wishlist</button>
       <button data-target="countdown">⏳ Countdown</button>
       <button data-target="notes">💌 Notes</button>
@@ -39,14 +44,13 @@
 
     <!-- HOME -->
     <section id="home" class="show">
-      <!-- Kartu Hero Utama -->
       <div class="card hero">
         <div>
           <h1 id="mainGreeting">Hai, Sayang 🌸</h1>
           <p id="weatherGreeting" style="font-size: 18px; margin-top:8px; color: var(--accent); font-weight: 600;">Memuat sapaan spesial...</p>
           <p style="font-size: 16px; margin-top:12px;">Ini aplikasi kecil yang aku buat khusus untuk kamu. Semoga tiap membuka halaman ini, kamu merasa disayang, diperhatiin, dan dihujani bunga-bunga manis 💖</p>
           <div class="hero-cta">
-            <button class="btn" data-target="gallery">🗺️ Lihat Perjalanan Kita</button>
+            <button class="btn" data-target="gallery">🕰️ Lihat Perjalanan Kita</button>
             <button class="btn ghost" data-action="burst">Taburkan Bunga ✨</button>
           </div>
           <div style="margin-top: 14px; color:#8a6b7e; font-size: 14px">Psst… kamu bisa upload foto kita di menu Gallery, dan atur tanggal anniversary di menu Countdown ya!</div>
@@ -55,18 +59,14 @@
           <img id="heroPhoto" src="https://placehold.co/600x600/f7e8f3/8a6b7e?text=Foto+Kita" alt="Foto Kamu" />
         </div>
       </div>
-
-      <!-- KARTU BARU UNTUK KILAS BALIK (tersembunyi) -->
-      <div id="onThisDayCard" class="card on-this-day" style="display: none;">
-        <!-- Konten akan diisi oleh JavaScript -->
-      </div>
+      <div id="onThisDayCard" class="card on-this-day" style="display: none;"></div>
     </section>
 
-    <!-- ... (Sisa kode HTML dari GALLERY sampai akhir tidak berubah) ... -->
+    <!-- GALLERY (TIMELINE) -->
     <section id="gallery">
       <div class="card">
         <div style="display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap; margin-bottom:14px">
-          <h2>Perjalanan Kita 🗺️</h2>
+          <h2>Perjalanan Kita 🕰️</h2>
           <div>
             <button class="btn ghost" id="randomMemoryBtn">Kenangan Acak ✨</button>
             <button class="btn ghost" id="addPhotoBtn">➕ Tambah</button>
@@ -79,6 +79,17 @@
         <button id="deleteBtn" class="btn danger" style="position:absolute; bottom:20px; right:20px">🗑️ Hapus Foto</button>
       </div>
     </section>
+
+    <!-- PETA KENANGAN (HALAMAN BARU) -->
+    <section id="map">
+        <div class="card">
+            <h2>Peta Kenangan 🗺️</h2>
+            <p style="margin: 6px 0 14px">Lihat semua jejak perjalanan cinta kita di seluruh dunia!</p>
+            <div id="mapContainer" class="map-container"></div>
+        </div>
+    </section>
+
+    <!-- WISHLIST -->
     <section id="wishlist">
         <div class="card">
             <h2>Wishlist Kita 📝</h2>
@@ -90,6 +101,8 @@
             <div id="wishlistContainer"></div>
         </div>
     </section>
+
+    <!-- COUNTDOWN -->
     <section id="countdown">
       <div class="card">
         <h2>Hitung Mundur Hari Spesial ⏳</h2>
@@ -108,6 +121,8 @@
         </div>
       </div>
     </section>
+
+    <!-- LOVE NOTES -->
     <section id="notes">
       <div class="card">
         <h2>Love Notes 💌</h2>
@@ -130,23 +145,37 @@
         </div>
       </div>
     </section>
+
     <footer>Made with 💖 just for you • Jika kamu melihat ini, kamu itu spesial ✨</footer>
     <button id="musicToggleBtn" title="Putar/Hentikan Musik">🎵</button>
   </div>
+  
+  <!-- MODAL UNTUK UPLOAD FOTO BARU (DIPERBARUI) -->
   <div id="photoUploader" class="editor-modal">
     <div class="editor-content">
       <button id="closeUploaderBtn" class="close-btn">×</button>
       <h3>Tambah Kenangan Baru</h3>
+      
       <label for="photoFileInput" class="file-input-label">Pilih Foto...</label>
       <input type="file" id="photoFileInput" accept="image/*" hidden>
       <img id="photoPreview" src="" alt="Preview" class="photo-preview"/>
+
       <label for="photoDateInput">Tanggal Kenangan</label>
       <input type="date" id="photoDateInput" class="input">
+
       <label for="photoLabelInput">Judul Kenangan</label>
       <input type="text" id="photoLabelInput" class="input" placeholder="mis: Kencan pertama">
+
+      <!-- INPUT LOKASI (BARU) -->
+      <label for="photoLocationInput">Lokasi (Opsional)</label>
+      <input type="text" id="photoLocationInput" class="input" placeholder="mis: Bandung, Indonesia">
+
       <button id="savePhotoBtn" class="btn">Simpan Kenangan</button>
     </div>
   </div>
+
+  <!-- MEMANGGIL SEMUA FILE JAVASCRIPT -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.7.77/Tone.js"></script>
   <script src="js/config.js"></script>
   <script src="js/data.js"></script>
@@ -155,6 +184,9 @@
   <script src="js/wishlist.js"></script>
   <script src="js/features.js"></script>
   <script src="js/main.js"></script>
+  <script src="js/map.js"></script>
+  
+  <!-- SCRIPT PWA -->
   <script>
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {

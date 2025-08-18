@@ -56,12 +56,51 @@ function setupCountdown() {
         await saveData();
         setCountdownUI();
         alert('Tanggal spesial berhasil disimpan!');
+        requestNotificationPermission();
     });
     setInterval(tick, 1000);
 }
 
+function requestNotificationPermission() {
+    if ('Notification' in window && Notification.permission === 'default') {
+        Notification.requestPermission().then(permission => {
+            if (permission === 'granted') {
+                console.log("Izin notifikasi diberikan!");
+            }
+        });
+    }
+}
 
-// --- FITUR 2: LOVE NOTES ---
+function showNotification(title, options) {
+    if ('Notification' in window && Notification.permission === 'granted') {
+        new Notification(title, options);
+    }
+}
+
+function setupCountdownReminders() {
+    if (!appData.countdown || !appData.countdown.date) return;
+    const targetDate = new Date(appData.countdown.date);
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const diffTime = targetDate - today;
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    const reminderPoints = [7, 3, 1, 0];
+    for (const days of reminderPoints) {
+        if (diffDays === days) {
+            const reminderId = `countdown-reminder-${appData.countdown.date}-${days}`;
+            if (!localStorage.getItem(reminderId)) {
+                let message = `Tinggal ${days} hari lagi menuju hari spesial kita: ${appData.countdown.title}! ❤️`;
+                if (days === 1) message = `Besok adalah hari spesial kita: ${appData.countdown.title}! ✨`;
+                if (days === 0) message = `Selamat hari spesial, Sayang! 🎉 Hari ini adalah hari ${appData.countdown.title}!`;
+                showNotification("Pengingat Spesial 💖", { body: message, icon: 'https://res.cloudinary.com/djfw245ka/image/upload/v1755495113/Desain_tanpa_judul_mzru8z.png' });
+                localStorage.setItem(reminderId, 'sent');
+            }
+        }
+    }
+}
+
+
+// --- FITUR LOVE NOTES ---
 const typeEl = document.getElementById('typewriter');
 const randomBtn = document.getElementById('randomBtn');
 const copyBtn = document.getElementById('copyBtn');
@@ -98,9 +137,7 @@ function typeText(text) {
     if (window.typewriterInterval) clearInterval(window.typewriterInterval);
     window.typewriterInterval = setInterval(() => {
         typeEl.textContent = text.slice(0, i++);
-        if (i > text.length) {
-            clearInterval(window.typewriterInterval);
-        }
+        if (i > text.length) clearInterval(window.typewriterInterval);
     }, 18);
 }
 
@@ -125,9 +162,7 @@ function setupNotes() {
     addNote.addEventListener('click', async () => {
         const v = noteInput.value.trim();
         if (!v) return;
-        if (!appData.notes.includes(v)) {
-            appData.notes.unshift(v);
-        }
+        if (!appData.notes.includes(v)) appData.notes.unshift(v);
         await saveData();
         renderNotesUI();
         noteInput.value = '';
@@ -136,62 +171,31 @@ function setupNotes() {
 }
 
 
-// --- FITUR 3: MUSIK LATAR ---
+// --- FITUR MUSIK LATAR ---
 const musicToggleBtn = document.getElementById('musicToggleBtn');
 let synth, part, isMusicPlaying = false, isAudioReady = false;
 
 function setupMusic() {
-    synth = new Tone.PolySynth(Tone.Synth, {
-        oscillator: { type: "fmsine", modulationType: "sine", modulationIndex: 3, harmonicity: 3.4 },
-        envelope: { attack: 0.01, decay: 0.1, sustain: 0.2, release: 0.4 }
-    }).toDestination();
+    synth = new Tone.PolySynth(Tone.Synth, { oscillator: { type: "fmsine", modulationType: "sine", modulationIndex: 3, harmonicity: 3.4 }, envelope: { attack: 0.01, decay: 0.1, sustain: 0.2, release: 0.4 } }).toDestination();
     synth.volume.value = -12;
-
-    const melody = [
-        {'time': '0:0', 'note': 'C4', 'duration': '4n'}, {'time': '0:1', 'note': 'C4', 'duration': '4n'},
-        {'time': '0:2', 'note': 'G4', 'duration': '4n'}, {'time': '0:3', 'note': 'G4', 'duration': '4n'},
-        {'time': '1:0', 'note': 'A4', 'duration': '4n'}, {'time': '1:1', 'note': 'A4', 'duration': '4n'},
-        {'time': '1:2', 'note': 'G4', 'duration': '2n'},
-        {'time': '2:0', 'note': 'F4', 'duration': '4n'}, {'time': '2:1', 'note': 'F4', 'duration': '4n'},
-        {'time': '2:2', 'note': 'E4', 'duration': '4n'}, {'time': '2:3', 'note': 'E4', 'duration': '4n'},
-        {'time': '3:0', 'note': 'D4', 'duration': '4n'}, {'time': '3:1', 'note': 'D4', 'duration': '4n'},
-        {'time': '3:2', 'note': 'C4', 'duration': '2n'},
-    ];
-    
-    part = new Tone.Part((time, value) => {
-        synth.triggerAttackRelease(value.note, value.duration, time);
-    }, melody).start(0);
+    const melody = [ {'time': '0:0', 'note': 'C4', 'duration': '4n'}, {'time': '0:1', 'note': 'C4', 'duration': '4n'}, {'time': '0:2', 'note': 'G4', 'duration': '4n'}, {'time': '0:3', 'note': 'G4', 'duration': '4n'}, {'time': '1:0', 'note': 'A4', 'duration': '4n'}, {'time': '1:1', 'note': 'A4', 'duration': '4n'}, {'time': '1:2', 'note': 'G4', 'duration': '2n'}, {'time': '2:0', 'note': 'F4', 'duration': '4n'}, {'time': '2:1', 'note': 'F4', 'duration': '4n'}, {'time': '2:2', 'note': 'E4', 'duration': '4n'}, {'time': '2:3', 'note': 'E4', 'duration': '4n'}, {'time': '3:0', 'note': 'D4', 'duration': '4n'}, {'time': '3:1', 'note': 'D4', 'duration': '4n'}, {'time': '3:2', 'note': 'C4', 'duration': '2n'}, ];
+    part = new Tone.Part((time, value) => { synth.triggerAttackRelease(value.note, value.duration, time); }, melody).start(0);
     part.loop = true;
     part.loopEnd = '4m';
     Tone.Transport.bpm.value = 100;
-
     musicToggleBtn.addEventListener('click', async () => {
-        if (!isAudioReady) {
-            await Tone.start();
-            isAudioReady = true;
-        }
-        if (isMusicPlaying) {
-            Tone.Transport.pause();
-            musicToggleBtn.textContent = '🎵';
-            isMusicPlaying = false;
-        } else {
-            Tone.Transport.start();
-            musicToggleBtn.textContent = '🔇';
-            isMusicPlaying = true;
-        }
+        if (!isAudioReady) { await Tone.start(); isAudioReady = true; }
+        if (isMusicPlaying) { Tone.Transport.pause(); musicToggleBtn.textContent = '🎵'; isMusicPlaying = false; } else { Tone.Transport.start(); musicToggleBtn.textContent = '🔇'; isMusicPlaying = true; }
     });
 }
 
 
-// --- FITUR 4: SAPAAN CUACA ---
+// --- FITUR SAPAAN CUACA ---
 const weatherGreetingEl = document.getElementById('weatherGreeting');
 const mainGreetingEl = document.getElementById('mainGreeting');
 
 function getWeatherGreeting() {
-    if (!navigator.geolocation) {
-        weatherGreetingEl.textContent = "Semoga harimu indah, ya!";
-        return;
-    }
+    if (!navigator.geolocation) { weatherGreetingEl.textContent = "Semoga harimu indah, ya!"; return; }
     navigator.geolocation.getCurrentPosition(async (position) => {
         const { latitude: lat, longitude: lon } = position.coords;
         try {
@@ -206,16 +210,12 @@ function getWeatherGreeting() {
             else if ([95, 96, 99].includes(weatherCode)) greeting = "Ada badai di luar, tapi di sini aman bersamamu. ⛈️";
             weatherGreetingEl.textContent = greeting;
             mainGreetingEl.textContent = "Hai, Sayang";
-        } catch (error) {
-            weatherGreetingEl.textContent = "Semoga harimu indah, ya!";
-        }
-    }, () => {
-        weatherGreetingEl.textContent = "Semoga harimu indah, ya!";
-    });
+        } catch (error) { weatherGreetingEl.textContent = "Semoga harimu indah, ya!"; }
+    }, () => { weatherGreetingEl.textContent = "Semoga harimu indah, ya!"; });
 }
 
 
-// --- FITUR 5: FOTO UTAMA ACAK ---
+// --- FITUR FOTO UTAMA ACAK ---
 function syncHero() {
     if (appData.gallery && appData.gallery.length > 0) {
         const randomIndex = Math.floor(Math.random() * appData.gallery.length);
@@ -224,60 +224,70 @@ function syncHero() {
 }
 
 
-// --- FITUR 6: KILAS BALIK & NOTIFIKASI (DIPERBARUI) ---
-function showOnThisDayNotification(memory, yearText) {
-    const title = 'Kilas Balik Hari Ini! 💖';
-    const options = {
-        body: `Tepat ${yearText} yang lalu, kita punya kenangan ini: ${memory.label}`,
-        icon: 'https://res.cloudinary.com/djfw245ka/image/upload/v1755495113/Desain_tanpa_judul_mzru8z.png', // Ikon notifikasi
-        badge: 'https://res.cloudinary.com/djfw245ka/image/upload/v1755495113/Desain_tanpa_judul_mzru8z.png' // Ikon kecil di status bar (opsional)
-    };
-
-    if ('Notification' in window) {
-        if (Notification.permission === 'granted') {
-            new Notification(title, options);
-        } else if (Notification.permission !== 'denied') {
-            Notification.requestPermission().then(permission => {
-                if (permission === 'granted') {
-                    new Notification(title, options);
-                }
-            });
-        }
-    }
-}
-
+// --- FITUR KILAS BALIK HARI INI ---
 function setupOnThisDay() {
     const onThisDayCard = document.getElementById('onThisDayCard');
-    if (!appData.gallery || appData.gallery.length === 0) {
-        return;
-    }
-
+    if (!appData.gallery || appData.gallery.length === 0) return;
     const today = new Date();
     const currentMonth = today.getMonth() + 1;
     const currentDay = today.getDate();
     const currentYear = today.getFullYear();
-
     const memories = appData.gallery.filter(photo => {
         const [year, month, day] = photo.date.split('-').map(Number);
         return month === currentMonth && day === currentDay && year < currentYear;
     });
-
     if (memories.length > 0) {
         const memory = memories[Math.floor(Math.random() * memories.length)];
         const memoryYear = parseInt(memory.date.split('-')[0]);
         const yearsAgo = currentYear - memoryYear;
         const yearText = yearsAgo === 1 ? '1 tahun' : `${yearsAgo} tahun`;
-
-        onThisDayCard.innerHTML = `
-            <img src="${memory.url}" alt="${memory.label}" class="on-this-day-img">
-            <div class="on-this-day-text">
-                <h3>Kilas Balik Hari Ini...</h3>
-                <p>Tepat <strong>${yearText}</strong> yang lalu, kita punya kenangan ini: <strong>${memory.label}</strong></p>
-            </div>
-        `;
+        onThisDayCard.innerHTML = `<img src="${memory.url}" alt="${memory.label}" class="on-this-day-img"><div class="on-this-day-text"><h3>Kilas Balik Hari Ini...</h3><p>Tepat <strong>${yearText}</strong> yang lalu, kita punya kenangan ini: <strong>${memory.label}</strong></p></div>`;
         onThisDayCard.style.display = 'grid';
+        showNotification('Kilas Balik Hari Ini! 💖', { body: `Tepat ${yearText} yang lalu, kita punya kenangan ini: ${memory.label}`, icon: 'https://res.cloudinary.com/djfw245ka/image/upload/v1755495113/Desain_tanpa_judul_mzru8z.png' });
+    }
+}
 
-        // Kirim notifikasi
-        showOnThisDayNotification(memory, yearText);
+// --- FITUR NOTIFIKASI LOVE NOTE HARIAN ---
+function setupDailyNoteNotification() {
+    if (!appData.notes || appData.notes.length === 0) return;
+    const today = new Date().toLocaleDateString();
+    const lastSentDate = localStorage.getItem('dailyNoteSentDate');
+    if (lastSentDate !== today) {
+        requestNotificationPermission();
+        if ('Notification' in window && Notification.permission === 'granted') {
+            const randomNoteText = appData.notes[Math.floor(Math.random() * appData.notes.length)];
+            showNotification('Pesan Cinta Untukmu 💌', { body: randomNoteText, icon: 'https://res.cloudinary.com/djfw245ka/image/upload/v1755495113/Desain_tanpa_judul_mzru8z.png' });
+            localStorage.setItem('dailyNoteSentDate', today);
+        }
+    }
+}
+
+// --- FITUR NOTIFIKASI CUACA (LOGIKA BARU) ---
+function setupWeatherNotification() {
+    const today = new Date().toLocaleDateString();
+    const lastSentDate = localStorage.getItem('weatherNoteSentDate');
+
+    // Hanya kirim notifikasi sekali sehari
+    if (lastSentDate !== today) {
+        if (!navigator.geolocation) return;
+
+        navigator.geolocation.getCurrentPosition(async (position) => {
+            const { latitude: lat, longitude: lon } = position.coords;
+            try {
+                const response = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true`);
+                const weatherData = await response.json();
+                const weatherCode = weatherData.current_weather.weathercode;
+                let suggestion = null;
+
+                if ([0, 1].includes(weatherCode)) suggestion = "Cuacanya cerah banget! Cocok nih buat jalan-jalan sore. ☀️";
+                else if ([51, 53, 55, 61, 63, 65, 80, 81, 82].includes(weatherCode)) suggestion = "Di luar lagi hujan, enaknya nonton film bareng di rumah. 🌧️";
+                
+                if (suggestion) {
+                    requestNotificationPermission();
+                    showNotification("Ide Kencan Hari Ini 💕", { body: suggestion, icon: 'https://res.cloudinary.com/djfw245ka/image/upload/v1755495113/Desain_tanpa_judul_mzru8z.png' });
+                    localStorage.setItem('weatherNoteSentDate', today);
+                }
+            } catch (error) { console.error("Gagal mengirim notifikasi cuaca:", error); }
+        });
     }
 }

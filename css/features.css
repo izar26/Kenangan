@@ -42,11 +42,16 @@
   padding: 20px;
   border-radius: var(--radius);
   box-shadow: 0 10px 25px rgba(0,0,0,0.07);
+  position: relative; /* Diperlukan untuk tombol edit */
 }
 .timeline-date {
   font-weight: 600;
   color: var(--primary);
   margin-bottom: 8px;
+}
+.timeline-location {
+  font-size: 14px;
+  margin-top: 4px;
 }
 .timeline-photo {
   width: 100%;
@@ -56,6 +61,28 @@
   margin-top: 12px;
   cursor: pointer;
 }
+.edit-memory-btn {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(4px);
+  border: 1px solid rgba(0,0,0,0.05);
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  cursor: pointer;
+  font-size: 16px;
+  display: grid;
+  place-items: center;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  z-index: 5;
+}
+.timeline-content:hover .edit-memory-btn {
+  opacity: 1;
+}
+
 
 /* --- Fitur 2: Wishlist --- */
 #wishlistContainer {
@@ -195,7 +222,7 @@
   color: var(--danger);
 }
 
-/* --- Fitur 5: Kilas Balik (GAYA BARU) --- */
+/* --- Fitur 5: Kilas Balik --- */
 .on-this-day {
   margin-top: 24px;
   border: 2px dashed var(--primary-2);

@@ -20,6 +20,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   setupNavigation();
   setupPetalsAnimation();
   setupTimeline();
+  setupMap(); // <-- JALANKAN FITUR PETA BARU
   setupWishlist();
   setupCountdown();
   setupNotes();
@@ -28,7 +29,10 @@ document.addEventListener('DOMContentLoaded', async () => {
   // 4. Jalankan fitur dinamis yang butuh data
   getWeatherGreeting();
   randomNote(); // Tampilkan note acak pertama kali
-  setupOnThisDay(); // <-- JALANKAN FITUR KILAS BALIK BARU
+  setupOnThisDay();
+setupCountdownReminders();
+setupDailyNoteNotification();
+setupWeatherNotification();
 
   console.log("Aplikasi 'Cerita Kita' berhasil dimuat dan siap digunakan!💖");
 });
