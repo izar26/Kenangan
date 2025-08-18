@@ -1,0 +1,72 @@
+/* =====================
+    GAYA RESPONSIVE
+   ===================== */
+/* File ini berisi semua @media query untuk menyesuaikan tampilan di tablet dan HP. */
+
+/* --- Untuk Tablet & di bawahnya (lebar maks 960px) --- */
+@media (max-width: 960px) {
+  .hero {
+    grid-template-columns: 1fr;
+  }
+  .notes {
+    grid-template-columns: 1fr;
+  }
+  .hero-img {
+    aspect-ratio: 16/10;
+    margin-top: 16px;
+  }
+}
+
+/* --- Khusus untuk HP (lebar maks 600px) --- */
+@media (max-width: 600px) {
+  .app-shell {
+    padding: 16px;
+  }
+  .nav {
+    padding: 8px;
+    gap: 6px;
+  }
+  .nav button {
+    padding: 8px 12px;
+    font-size: 14px;
+  }
+  .hero-img {
+    aspect-ratio: 4/3;
+  }
+  .count-wrap {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+  .pill {
+    padding: 12px;
+    border-radius: 18px;
+  }
+  .notes {
+    gap: 20px;
+  }
+  .note-list {
+    max-height: none;
+  }
+  footer {
+    padding: 20px 0 40px;
+  }
+  #musicToggleBtn {
+    width: 45px;
+    height: 45px;
+    font-size: 20px;
+    bottom: 15px;
+    right: 15px;
+  }
+  .timeline-container::before {
+    left: 10px;
+  }
+  .timeline-item {
+    padding-left: 40px;
+  }
+  .timeline-item::before {
+    width: 30px;
+    height: 30px;
+    left: -5px;
+    font-size: 14px;
+  }
+}

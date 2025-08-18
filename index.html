@@ -3,13 +3,22 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Untuk Kamu 💖</title>
+  <title>Cerita Kita 💖</title>
   
+  <!-- KONFIGURASI PWA -->
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#ff6fa9">
-  <link rel="apple-touch-icon" href="https://placehold.co/192x192/ff6fa9/white?text=💖">
+  <link rel="apple-touch-icon" href="https://res.cloudinary.com/djfw245ka/image/upload/v1755495113/Desain_tanpa_judul_mzru8z.png">
   
-  <link rel="stylesheet" href="style.css">
+  <!-- MEMANGGIL SEMUA FILE CSS DARI FOLDER 'css' -->
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/features.css">
+  <link rel="stylesheet" href="css/animations.css">
+  <link rel="stylesheet" href="css/responsive.css">
+  
+  <!-- Font online opsional -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Poppins:wght@400;600;700&family=Caveat&family=Merriweather&display=swap" rel="stylesheet">
@@ -19,13 +28,16 @@
 
   <div class="app-shell">
     
+    <!-- NAVIGATION -->
     <nav class="nav card" id="nav">
       <button class="active" data-target="home">🏠 Home</button>
-      <button data-target="gallery">🗺️ Perjalanan Kita</button>
+      <button data-target="gallery">🗺️ Perjalanan</button>
+      <button data-target="wishlist">📝 Wishlist</button>
       <button data-target="countdown">⏳ Countdown</button>
-      <button data-target="notes">💌 Love Notes</button>
+      <button data-target="notes">💌 Notes</button>
     </nav>
 
+    <!-- HOME -->
     <section id="home" class="show">
       <div class="card hero">
         <div>
@@ -44,6 +56,7 @@
       </div>
     </section>
 
+    <!-- GALLERY (TIMELINE) -->
     <section id="gallery">
       <div class="card">
         <div style="display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap; margin-bottom:14px">
@@ -53,8 +66,7 @@
             <button class="btn ghost" id="addPhotoBtn">➕ Tambah</button>
           </div>
         </div>
-        <div class="timeline-container" id="timelineContainer">
-          </div>
+        <div class="timeline-container" id="timelineContainer"></div>
       </div>
       <div class="lightbox" id="lightbox">
         <img alt="preview" />
@@ -62,6 +74,20 @@
       </div>
     </section>
 
+    <!-- WISHLIST -->
+    <section id="wishlist">
+        <div class="card">
+            <h2>Wishlist Kita 📝</h2>
+            <p style="margin: 6px 0 14px">Tulis semua hal seru yang ingin kita lakukan bersama!</p>
+            <div class="inline" style="margin-bottom: 20px;">
+                <input id="wishlistInput" class="input" type="text" placeholder="mis: Liburan ke pantai">
+                <button class="btn" id="addWishBtn">Tambah Impian</button>
+            </div>
+            <div id="wishlistContainer"></div>
+        </div>
+    </section>
+
+    <!-- COUNTDOWN -->
     <section id="countdown">
       <div class="card">
         <h2>Hitung Mundur Hari Spesial ⏳</h2>
@@ -81,6 +107,7 @@
       </div>
     </section>
 
+    <!-- LOVE NOTES -->
     <section id="notes">
       <div class="card">
         <h2>Love Notes 💌</h2>
@@ -108,28 +135,33 @@
     <button id="musicToggleBtn" title="Putar/Hentikan Musik">🎵</button>
   </div>
   
+  <!-- MODAL UNTUK UPLOAD FOTO BARU -->
   <div id="photoUploader" class="editor-modal">
     <div class="editor-content">
       <button id="closeUploaderBtn" class="close-btn">×</button>
       <h3>Tambah Kenangan Baru</h3>
-      
       <label for="photoFileInput" class="file-input-label">Pilih Foto...</label>
       <input type="file" id="photoFileInput" accept="image/*" hidden>
       <img id="photoPreview" src="" alt="Preview" class="photo-preview"/>
-
       <label for="photoDateInput">Tanggal Kenangan</label>
       <input type="date" id="photoDateInput" class="input">
-
       <label for="photoLabelInput">Judul Kenangan</label>
       <input type="text" id="photoLabelInput" class="input" placeholder="mis: Kencan pertama">
-
       <button id="savePhotoBtn" class="btn">Simpan Kenangan</button>
     </div>
   </div>
 
+  <!-- MEMANGGIL SEMUA FILE JAVASCRIPT DARI FOLDER 'js' -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.7.77/Tone.js"></script>
-  <script src="script.js"></script>
+  <script src="js/config.js"></script>
+  <script src="js/data.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/timeline.js"></script>
+  <script src="js/wishlist.js"></script>
+  <script src="js/features.js"></script>
+  <script src="js/main.js"></script>
   
+  <!-- SCRIPT PWA -->
   <script>
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {

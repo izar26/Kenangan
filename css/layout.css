@@ -1,0 +1,97 @@
+/* =====================
+    KOMPONEN LAYOUT UTAMA
+   ===================== */
+/* File ini mengatur gaya untuk elemen-elemen besar yang membentuk struktur halaman. */
+
+.app-shell {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 24px;
+  position: relative;
+}
+
+/* --- Navigasi (DIPERBAIKI) --- */
+.nav {
+  position: sticky;
+  top: 12px;
+  z-index: 20;
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap; /* Memastikan tombol turun ke bawah jika tidak muat */
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: saturate(120%) blur(10px);
+  background: linear-gradient(180deg, #ffffffcc, #ffffff99);
+  border: 1px solid #fff4;
+  box-shadow: var(--shadow);
+  border-radius: 999px; /* Kembalikan ke border-radius super bulat */
+  padding: 10px;
+}
+
+/* --- Kontainer Halaman (Section) --- */
+section {
+  display: none;
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity .35s ease, transform .35s ease;
+}
+section.show {
+  display: block;
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* --- Kartu (Dasar dari semua konten) --- */
+.card {
+  background: var(--card);
+  border: 1px solid #fff6;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: clamp(16px, 3.2vw, 28px);
+}
+
+/* --- Halaman Utama (Hero) --- */
+.hero {
+  display: grid;
+  grid-template-columns: 1.1fr .9fr;
+  gap: clamp(16px, 3.2vw, 32px);
+  align-items: center;
+}
+.hero-img {
+  position: relative;
+  aspect-ratio: 4/5;
+  border-radius: calc(var(--radius) * 1.2);
+  overflow: hidden;
+  box-shadow: 0 20px 60px rgba(180, 108, 255, .18);
+  background: linear-gradient(145deg, #ffd2e8, #f6e8ff);
+  border: 8px solid #fff;
+  isolation: isolate;
+}
+.hero-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: saturate(1.05) contrast(1.02);
+}
+.flower-corners::before,
+.flower-corners::after {
+  content: "🌸";
+  position: absolute;
+  font-size: clamp(24px, 3vw, 36px);
+}
+.flower-corners::before { top: 8px; left: 8px; }
+.flower-corners::after  { bottom: 8px; right: 8px; }
+.hero-cta {
+  display: flex;
+  gap: 10px;
+  margin-top: 16px;
+  flex-wrap: wrap;
+}
+
+/* --- Footer --- */
+footer {
+  text-align: center;
+  color: #8a6b7e;
+  padding: 30px 0 60px;
+  font-size: 13px;
+}
