@@ -28,6 +28,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   // 4. Jalankan fitur dinamis yang butuh data
   getWeatherGreeting();
   randomNote(); // Tampilkan note acak pertama kali
+  setupOnThisDay(); // <-- JALANKAN FITUR KILAS BALIK BARU
 
   console.log("Aplikasi 'Cerita Kita' berhasil dimuat dan siap digunakan!💖");
 });

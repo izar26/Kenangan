@@ -222,3 +222,62 @@ function syncHero() {
         document.getElementById('heroPhoto').src = appData.gallery[randomIndex].url;
     }
 }
+
+
+// --- FITUR 6: KILAS BALIK & NOTIFIKASI (DIPERBARUI) ---
+function showOnThisDayNotification(memory, yearText) {
+    const title = 'Kilas Balik Hari Ini! 💖';
+    const options = {
+        body: `Tepat ${yearText} yang lalu, kita punya kenangan ini: ${memory.label}`,
+        icon: 'https://res.cloudinary.com/djfw245ka/image/upload/v1755495113/Desain_tanpa_judul_mzru8z.png', // Ikon notifikasi
+        badge: 'https://res.cloudinary.com/djfw245ka/image/upload/v1755495113/Desain_tanpa_judul_mzru8z.png' // Ikon kecil di status bar (opsional)
+    };
+
+    if ('Notification' in window) {
+        if (Notification.permission === 'granted') {
+            new Notification(title, options);
+        } else if (Notification.permission !== 'denied') {
+            Notification.requestPermission().then(permission => {
+                if (permission === 'granted') {
+                    new Notification(title, options);
+                }
+            });
+        }
+    }
+}
+
+function setupOnThisDay() {
+    const onThisDayCard = document.getElementById('onThisDayCard');
+    if (!appData.gallery || appData.gallery.length === 0) {
+        return;
+    }
+
+    const today = new Date();
+    const currentMonth = today.getMonth() + 1;
+    const currentDay = today.getDate();
+    const currentYear = today.getFullYear();
+
+    const memories = appData.gallery.filter(photo => {
+        const [year, month, day] = photo.date.split('-').map(Number);
+        return month === currentMonth && day === currentDay && year < currentYear;
+    });
+
+    if (memories.length > 0) {
+        const memory = memories[Math.floor(Math.random() * memories.length)];
+        const memoryYear = parseInt(memory.date.split('-')[0]);
+        const yearsAgo = currentYear - memoryYear;
+        const yearText = yearsAgo === 1 ? '1 tahun' : `${yearsAgo} tahun`;
+
+        onThisDayCard.innerHTML = `
+            <img src="${memory.url}" alt="${memory.label}" class="on-this-day-img">
+            <div class="on-this-day-text">
+                <h3>Kilas Balik Hari Ini...</h3>
+                <p>Tepat <strong>${yearText}</strong> yang lalu, kita punya kenangan ini: <strong>${memory.label}</strong></p>
+            </div>
+        `;
+        onThisDayCard.style.display = 'grid';
+
+        // Kirim notifikasi
+        showOnThisDayNotification(memory, yearText);
+    }
+}

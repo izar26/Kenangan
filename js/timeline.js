@@ -42,10 +42,17 @@ function renderTimelineUI() {
         sortedGallery.forEach(photo => {
             const item = document.createElement('div');
             item.className = 'timeline-item';
-            const date = new Date(photo.date);
-            // Tambah 1 hari ke tanggal agar tidak ada masalah zona waktu
-            date.setDate(date.getDate() + 1); 
-            const formattedDate = date.toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
+            
+            // Ambil tanggal dari string 'YYYY-MM-DD' untuk menghindari masalah zona waktu
+            const [year, month, day] = photo.date.split('-').map(Number);
+            // Buat tanggal baru dengan cara yang lebih aman
+            const date = new Date(year, month - 1, day); 
+            
+            const formattedDate = date.toLocaleDateString('id-ID', {
+                day: 'numeric',
+                month: 'long',
+                year: 'numeric'
+            });
 
             item.innerHTML = `
                 <div class="timeline-content">

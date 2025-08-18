@@ -39,6 +39,7 @@
 
     <!-- HOME -->
     <section id="home" class="show">
+      <!-- Kartu Hero Utama -->
       <div class="card hero">
         <div>
           <h1 id="mainGreeting">Hai, Sayang 🌸</h1>
@@ -54,9 +55,14 @@
           <img id="heroPhoto" src="https://placehold.co/600x600/f7e8f3/8a6b7e?text=Foto+Kita" alt="Foto Kamu" />
         </div>
       </div>
+
+      <!-- KARTU BARU UNTUK KILAS BALIK (tersembunyi) -->
+      <div id="onThisDayCard" class="card on-this-day" style="display: none;">
+        <!-- Konten akan diisi oleh JavaScript -->
+      </div>
     </section>
 
-    <!-- GALLERY (TIMELINE) -->
+    <!-- ... (Sisa kode HTML dari GALLERY sampai akhir tidak berubah) ... -->
     <section id="gallery">
       <div class="card">
         <div style="display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap; margin-bottom:14px">
@@ -73,8 +79,6 @@
         <button id="deleteBtn" class="btn danger" style="position:absolute; bottom:20px; right:20px">🗑️ Hapus Foto</button>
       </div>
     </section>
-
-    <!-- WISHLIST -->
     <section id="wishlist">
         <div class="card">
             <h2>Wishlist Kita 📝</h2>
@@ -86,8 +90,6 @@
             <div id="wishlistContainer"></div>
         </div>
     </section>
-
-    <!-- COUNTDOWN -->
     <section id="countdown">
       <div class="card">
         <h2>Hitung Mundur Hari Spesial ⏳</h2>
@@ -106,8 +108,6 @@
         </div>
       </div>
     </section>
-
-    <!-- LOVE NOTES -->
     <section id="notes">
       <div class="card">
         <h2>Love Notes 💌</h2>
@@ -130,12 +130,9 @@
         </div>
       </div>
     </section>
-
     <footer>Made with 💖 just for you • Jika kamu melihat ini, kamu itu spesial ✨</footer>
     <button id="musicToggleBtn" title="Putar/Hentikan Musik">🎵</button>
   </div>
-  
-  <!-- MODAL UNTUK UPLOAD FOTO BARU -->
   <div id="photoUploader" class="editor-modal">
     <div class="editor-content">
       <button id="closeUploaderBtn" class="close-btn">×</button>
@@ -150,8 +147,6 @@
       <button id="savePhotoBtn" class="btn">Simpan Kenangan</button>
     </div>
   </div>
-
-  <!-- MEMANGGIL SEMUA FILE JAVASCRIPT DARI FOLDER 'js' -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.7.77/Tone.js"></script>
   <script src="js/config.js"></script>
   <script src="js/data.js"></script>
@@ -160,8 +155,6 @@
   <script src="js/wishlist.js"></script>
   <script src="js/features.js"></script>
   <script src="js/main.js"></script>
-  
-  <!-- SCRIPT PWA -->
   <script>
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
