@@ -1,0 +1,21 @@
+{
+  "name": "Untuk Kamu 💖",
+  "short_name": "Untuk Kamu",
+  "description": "Aplikasi kecil yang dibuat khusus untukmu.",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#fff7fb",
+  "theme_color": "#ff6fa9",
+  "icons": [
+    {
+      "src": "https://placehold.co/192x192/ff6fa9/white?text=💖",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "https://placehold.co/512x512/ff6fa9/white?text=�",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

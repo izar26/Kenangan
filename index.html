@@ -4,8 +4,12 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Untuk Kamu 💖</title>
+  
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#ff6fa9">
+  <link rel="apple-touch-icon" href="https://placehold.co/192x192/ff6fa9/white?text=💖">
+  
   <link rel="stylesheet" href="style.css">
-  <!-- Font online opsional -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Poppins:wght@400;600;700&family=Caveat&family=Merriweather&display=swap" rel="stylesheet">
@@ -15,7 +19,6 @@
 
   <div class="app-shell">
     
-    <!-- NAVIGATION -->
     <nav class="nav card" id="nav">
       <button class="active" data-target="home">🏠 Home</button>
       <button data-target="gallery">🗺️ Perjalanan Kita</button>
@@ -23,7 +26,6 @@
       <button data-target="notes">💌 Love Notes</button>
     </nav>
 
-    <!-- HOME -->
     <section id="home" class="show">
       <div class="card hero">
         <div>
@@ -42,7 +44,6 @@
       </div>
     </section>
 
-    <!-- GALLERY (SEKARANG TIMELINE) -->
     <section id="gallery">
       <div class="card">
         <div style="display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap; margin-bottom:14px">
@@ -52,10 +53,8 @@
             <button class="btn ghost" id="addPhotoBtn">➕ Tambah</button>
           </div>
         </div>
-        <!-- Kontainer untuk timeline -->
         <div class="timeline-container" id="timelineContainer">
-          <!-- Timeline akan di-generate oleh JS di sini -->
-        </div>
+          </div>
       </div>
       <div class="lightbox" id="lightbox">
         <img alt="preview" />
@@ -63,7 +62,6 @@
       </div>
     </section>
 
-    <!-- COUNTDOWN -->
     <section id="countdown">
       <div class="card">
         <h2>Hitung Mundur Hari Spesial ⏳</h2>
@@ -83,7 +81,6 @@
       </div>
     </section>
 
-    <!-- LOVE NOTES -->
     <section id="notes">
       <div class="card">
         <h2>Love Notes 💌</h2>
@@ -111,22 +108,18 @@
     <button id="musicToggleBtn" title="Putar/Hentikan Musik">🎵</button>
   </div>
   
-  <!-- MODAL UNTUK UPLOAD FOTO BARU -->
   <div id="photoUploader" class="editor-modal">
     <div class="editor-content">
       <button id="closeUploaderBtn" class="close-btn">×</button>
       <h3>Tambah Kenangan Baru</h3>
       
-      <!-- Input untuk file foto -->
       <label for="photoFileInput" class="file-input-label">Pilih Foto...</label>
       <input type="file" id="photoFileInput" accept="image/*" hidden>
       <img id="photoPreview" src="" alt="Preview" class="photo-preview"/>
 
-      <!-- Input untuk tanggal -->
       <label for="photoDateInput">Tanggal Kenangan</label>
       <input type="date" id="photoDateInput" class="input">
 
-      <!-- Input untuk caption/label -->
       <label for="photoLabelInput">Judul Kenangan</label>
       <input type="text" id="photoLabelInput" class="input" placeholder="mis: Kencan pertama">
 
@@ -136,5 +129,17 @@
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.7.77/Tone.js"></script>
   <script src="script.js"></script>
+  
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/sw.js').then(registration => {
+          console.log('ServiceWorker berhasil didaftarkan: ', registration);
+        }).catch(registrationError => {
+          console.log('Pendaftaran ServiceWorker gagal: ', registrationError);
+        });
+      });
+    }
+  </script>
 </body>
 </html>
